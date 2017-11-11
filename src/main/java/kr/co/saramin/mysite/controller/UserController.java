@@ -62,18 +62,18 @@ public class UserController {
 	}
 	
 //	@Auth
-//	@RequestMapping(value="/modify", method=RequestMethod.GET)
-//	public String modify(@AuthUser UserVo authUser/*HttpSession session*/, Model model) {
-//		//접근 제거
-////		UserVo authUser = (UserVo)session.getAttribute("authUser");
-////		if (authUser == null) {
-////			return "redirect:/main";
-////		}
-//		
-//		Long no = authUser.getNo();
-//		UserVo userVo = userService.getUser(no);
-//		model.addAttribute("userVo", userVo);
-//		
-//		return "user/modify";
-//	}
+	@RequestMapping(value="/modify", method=RequestMethod.GET)
+	public String modify(HttpSession session, Model model) {
+		//접근 제거
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if (authUser == null) {
+			return "redirect:/main";
+		}
+		
+		Long no = authUser.getNo();
+		UserVo userVo = userService.getUser(no);
+		model.addAttribute("userVo", userVo);
+		
+		return "user/modify";
+	}
 }

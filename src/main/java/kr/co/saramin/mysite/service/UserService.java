@@ -16,7 +16,7 @@ public class UserService {
 //	private Mailer mailer;
 	
 	public UserVo login(UserVo vo) {
-		UserVo authUser = userDao.get(vo.getEmail(), vo.getPassword());
+		UserVo authUser = userDao.get(vo);
 		return authUser;
 	}
 	
@@ -24,5 +24,10 @@ public class UserService {
 		boolean result = userDao.insert(vo);
 //		mailer.sendMail();
 		return result;
+	}
+	
+	public UserVo getUser(Long no) {
+		UserVo vo = userDao.get(no);
+		return vo;
 	}
 }
