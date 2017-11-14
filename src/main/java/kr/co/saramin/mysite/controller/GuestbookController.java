@@ -1,6 +1,8 @@
 package kr.co.saramin.mysite.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.saramin.mysite.repository.GuestbookDao;
 import kr.co.saramin.mysite.vo.GuestbookVo;
@@ -45,5 +48,17 @@ public class GuestbookController {
 	public String add(@ModelAttribute GuestbookVo vo) {
 		guestbookDao.insert(vo);
 		return "redirect:/guestbook";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/list/json")
+	public Map<String, Object> list2() {
+		List<GuestbookVo> list = guestbookDao.getList();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
+		map.put("data", list);
+		
+		return map;
 	}
 }

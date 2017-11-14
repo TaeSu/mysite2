@@ -8,10 +8,45 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.servletContext.contextPath }/assets/css/user.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
+<script>
+$(function(){
+	$("input[type='button']").click(function(){
+		console.log("click");
+		var email = $("#email").val();
+		if (email == '') {
+			return;
+		}
+		
+		 $.ajax( {
+			    url : "/mysite2/api/user/checkemail?email="+email,
+			    type: "get",
+			    dataType: "json",
+			    data: "",
+			//  contentType: "application/json",
+			    success: function( response ){
+			       console.log( response );
+			       if (response.result != "success") {
+			    	   console.error(repsone.message);
+			    	   return
+			       }
+			       if (resposne.data == true) {
+			    	   alert("존재합니다.");
+			    	   return;
+			       }
+			    },
+			    error: function( jqXHR, status, error ){
+			       console.error( status + " : " + error );
+			    }
+
+			   });
+	});
+});
+</script>
 </head>
 <body>
 	<div id="container">
-		<c:import url="/WEB-INF/views/include/header.jsp"/>
+		<c:import url="/WEB-INF/views/include/header.jsp"/>s
 		<div id="content">
 			<div id="user">
 

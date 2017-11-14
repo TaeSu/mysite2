@@ -14,7 +14,7 @@
 	<context:annotation-config />
 
 	<context:component-scan
-		base-package="kr.co.saramin.mysite.repository, kr.co.saramin.mysite.service">
+		base-package="kr.co.saramin.mysite.repository, kr.co.saramin.mysite.service, kr.co.saramin.mysite.exception">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation"

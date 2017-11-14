@@ -15,6 +15,11 @@ public class UserService {
 //	@Autowired
 //	private Mailer mailer;
 	
+	public Boolean existEmail(String email) {
+		UserVo vo = userDao.get(email);
+		return vo != null;
+	}
+	
 	public UserVo login(UserVo vo) {
 		UserVo authUser = userDao.get(vo);
 		return authUser;
@@ -30,4 +35,5 @@ public class UserService {
 		UserVo vo = userDao.get(no);
 		return vo;
 	}
+	
 }
