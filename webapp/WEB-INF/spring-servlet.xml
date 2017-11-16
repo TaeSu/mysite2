@@ -27,6 +27,13 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
+
+		<!-- argument resolver -->
+		<mvc:argument-resolvers>
+			<bean
+				class="kr.co.saramin.mysite.security.AuthUserHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
+
 	</mvc:annotation-driven>
 
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
@@ -34,6 +41,30 @@
 
 	<!-- Bean 설정을 @로 하겠다 -->
 	<context:annotation-config />
+
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<!-- <mvc:interceptor> <mvc:mapping path="/guestbook/**" /> <bean class="kr.co.saramin.mysite.interceptor.MyInterceptor02" 
+			/> </mvc:interceptor> -->
+
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth" />
+			<bean class="kr.co.saramin.mysite.security.AuthLoginInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout" />
+			<bean class="kr.co.saramin.mysite.security.AuthLogoutInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<mvc:exclude-mapping path="/assets/**" />
+			<bean class="kr.co.saramin.mysite.security.AuthInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<!-- ViewResolver 설정 -->
 	<bean id="viewResolver"
@@ -47,6 +78,7 @@
 
 
 	<!-- scanning 해야 할 패키지 정보 -->
-	<context:component-scan base-package="kr.co.saramin.mysite.controller, kr.co.saramin.mysite.controller.api" />
+	<context:component-scan
+		base-package="kr.co.saramin.mysite.controller, kr.co.saramin.mysite.controller.api" />
 
 </beans>

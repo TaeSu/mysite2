@@ -1,7 +1,5 @@
 package kr.co.saramin.mysite.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +7,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.co.saramin.mysite.security.Auth;
+import kr.co.saramin.mysite.security.Auth.Role;
+import kr.co.saramin.mysite.security.AuthUser;
 import kr.co.saramin.mysite.service.UserService;
 import kr.co.saramin.mysite.vo.UserVo;
 
@@ -24,26 +25,26 @@ public class UserController {
 		return "user/login";
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(HttpSession session, @ModelAttribute UserVo vo) {
-		UserVo authUser = userService.login(vo);
-		if (authUser == null) {
-			return "redirect:/user/login?result=fail";
-		}
-		
-		/* 인증처리 */
-		session.setAttribute("authUser", authUser);
-				
-		return "redirect:/main";
-	}
+//	@RequestMapping(value="/login", method=RequestMethod.POST)
+//	public String login(HttpSession session, @ModelAttribute UserVo vo) {
+//		UserVo authUser = userService.login(vo);
+//		if (authUser == null) {
+//			return "redirect:/user/login?result=fail";
+//		}
+//		
+//		/* 인증처리 */
+//		session.setAttribute("authUser", authUser);
+//				
+//		return "redirect:/main";
+//	}
 	
-	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
-		session.removeAttribute("authUser");
-		session.invalidate();
-		
-		return "redirect:/main";
-	}
+//	@RequestMapping("/logout")
+//	public String logout(HttpSession session) {
+//		session.removeAttribute("authUser");
+//		session.invalidate();
+//		
+//		return "redirect:/main";
+//	}
 	
 	@RequestMapping(value="/join", method=RequestMethod.GET)
 	public String join() {
@@ -61,17 +62,13 @@ public class UserController {
 		return "user/joinsuccess";
 	}
 	
-//	@Auth
+	@Auth(Role=Role.ADMIN)
 	@RequestMapping(value="/modify", method=RequestMethod.GET)
-	public String modify(HttpSession session, Model model) {
-		//접근 제거
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/main";
-		}
-		
+	public String modify(@AuthUser UserVo authUser, Model model) {
 		Long no = authUser.getNo();
 		UserVo userVo = userService.getUser(no);
+		
+		System.out.println(userVo);
 		model.addAttribute("userVo", userVo);
 		
 		return "user/modify";

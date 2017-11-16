@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.saramin.mysite.repository.GuestbookDao;
+import kr.co.saramin.mysite.security.Auth;
 import kr.co.saramin.mysite.vo.GuestbookVo;
 
 @Controller
@@ -23,6 +24,7 @@ public class GuestbookController {
 	@Autowired
 	private GuestbookDao guestbookDao;
 	
+	@Auth
 	@RequestMapping({"", "/list"})
 	public String list(Model model) {
 		List<GuestbookVo> list = guestbookDao.getList();
