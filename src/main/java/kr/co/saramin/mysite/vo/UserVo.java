@@ -1,10 +1,25 @@
 package kr.co.saramin.mysite.vo;
 
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class UserVo {
 	private Long no;
+	
+	@NotEmpty
+	@Length(min=2, max=5)
 	private String name;
+	
+	@Email
 	private String email;
+	
+	@NotEmpty
+	@Pattern(regexp="^[a-zA-Z0-9](4, 8)$")
 	private String password;
+	
 	private String gender;
 	
 	public Long getNo() {

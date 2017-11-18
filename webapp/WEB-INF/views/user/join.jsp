@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html>
@@ -46,20 +47,23 @@ $(function(){
 </head>
 <body>
 	<div id="container">
-		<c:import url="/WEB-INF/views/include/header.jsp"/>s
+		<c:import url="/WEB-INF/views/include/header.jsp"/>
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="joinForm" method="post" action="${pageContext.servletContext.contextPath }/user/join">
+				<form:form modelAttribute="userVo" id="join-form" name="joinForm" method="post" action="${pageContext.servletContext.contextPath }/user/join">
 					<label class="block-label" for="name">이름</label>
-					<input id="name" name="name" type="text" value="">
+					<form:input path="name"/>
+					<P style="color:red; text-algin:left"><form:errors path="name"/></P>
 
 					<label class="block-label" for="email">이메일</label>
-					<input id="email" name="email" type="text" value="">
+					<form:input path="email"/>
 					<input type="button" value="id 중복체크">
+					<form:errors path="email"/>
 					
 					<label class="block-label">패스워드</label>
-					<input name="password" type="password" value="">
+					<form:password path="password"/>
+					<form:errors path="password"/>
 					
 					<fieldset>
 						<legend>성별</legend>
@@ -75,7 +79,7 @@ $(function(){
 					
 					<input type="submit" value="가입하기">
 					
-				</form>
+				</form:form>
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/include/navigation.jsp"/>

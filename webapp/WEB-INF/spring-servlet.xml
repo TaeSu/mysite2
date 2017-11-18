@@ -8,6 +8,8 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<aop:aspectj-autoproxy />
+
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven>
 		<mvc:message-converters>
@@ -39,9 +41,6 @@
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
 
-	<!-- Bean 설정을 @로 하겠다 -->
-	<context:annotation-config />
-
 	<!-- Interceptors -->
 	<mvc:interceptors>
 		<!-- <mvc:interceptor> <mvc:mapping path="/guestbook/**" /> <bean class="kr.co.saramin.mysite.interceptor.MyInterceptor02" 
@@ -66,6 +65,9 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
+	<!-- the mvc resources tag does the magic -->
+	<mvc:resources mapping="/uploads/images/**" location="file:/uploads/" />
+
 	<!-- ViewResolver 설정 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -76,9 +78,37 @@
 		<property name="order" value="1" />
 	</bean>
 
+	<!-- 멀티파트 리졸버 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- 최대업로드 가능한 바이트크기 -->
+		<property name="maxUploadSize" value="52428800" />
+
+		<!-- 디스크에 임시 파일을 생성하기 전에 메모리에 보관할수있는 최대 바이트 크기 -->
+		<!-- property name="maxInMemorySize" value="52428800" / -->
+
+		<!-- defaultEncoding -->
+		<property name="defaultEncoding" value="utf-8" />
+
+	</bean>
+
+	<!-- Bean 설정을 @로 하겠다 -->
+	<context:annotation-config />
 
 	<!-- scanning 해야 할 패키지 정보 -->
 	<context:component-scan
 		base-package="kr.co.saramin.mysite.controller, kr.co.saramin.mysite.controller.api" />
+
+	<!-- 6. MessageSource -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages/messages_ko</value>
+			</list>
+		</property>
+	</bean>
+
 
 </beans>
